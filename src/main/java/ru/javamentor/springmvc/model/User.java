@@ -14,25 +14,26 @@ import java.util.Objects;
 public class User implements UserDetails {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @Column
+    @Column(name = "username")
     @NotEmpty(message = "Name should be between 2 and 25 latin characters")
     @Size(min = 2, max = 25)
     private String username;
 
-    @Column
+    @Column(name = "age")
     @Min(value = 0, message = "Age should be >= 0")
     @Max(value = 127, message = "Age should be < 128")
     private Short age;
 
-    @Column
+    @Column(name = "password")
     @Size(min = 3, max = 225, message = "Password should be between 3 and 50 characters")
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",
-                joinColumns = @JoinColumn(name = "users_id"),
+                joinColumns = @JoinColumn(name = "user_id"),
                 inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> role;
 

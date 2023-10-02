@@ -6,11 +6,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import ru.javamentor.springmvc.model.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService extends UserDetailsService {
 
     List<User> getAllUsers();
-    User getUserById(Long id);
+    Optional<User> getUserById(Long id);
     void addUser(User user);
     void removeUser(Long id);
     void updateUser(@Valid User user);

@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import ru.javamentor.springmvc.model.Role;
 import ru.javamentor.springmvc.model.User;
@@ -12,7 +11,6 @@ import ru.javamentor.springmvc.repositories.RoleRepository;
 import ru.javamentor.springmvc.service.UserService;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -73,7 +71,7 @@ public class AdminController {
         if (bindingResult.hasErrors()) {
             return "edit";
         } else {
-            List<Role> roles = roleRepository.findAll(rolesId);
+            List<Role> roles = roleRepository.findAllById(rolesId);
             user.setRole(roles);
             userService.updateUser(user);
             return "redirect:/hello";

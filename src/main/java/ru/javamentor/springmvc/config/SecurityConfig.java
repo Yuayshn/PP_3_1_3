@@ -13,12 +13,11 @@ import ru.javamentor.springmvc.service.UserService;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserService service;
+    //private final UserService service;
     private final SuccessUserHandler successUserHandler;
 
     @Autowired
-    public SecurityConfig(UserService service, SuccessUserHandler successUserHandler) {
-        this.service = service;
+    public SecurityConfig(SuccessUserHandler successUserHandler) {
         this.successUserHandler = successUserHandler;
     }
 
@@ -43,11 +42,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     // config authentication
-    @Override
-    protected void configure(AuthenticationManagerBuilder builder) throws Exception {
-        builder.userDetailsService(service)
-                .passwordEncoder(getPasswordEncoder());
-    }
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder builder) throws Exception {
+//        builder.userDetailsService(service)
+//                .passwordEncoder(getPasswordEncoder());
+//    }
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
