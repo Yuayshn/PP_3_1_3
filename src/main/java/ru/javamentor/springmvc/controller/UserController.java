@@ -6,6 +6,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import ru.javamentor.springmvc.service.UserService;
 
+import java.security.Principal;
 
 
 @Controller
@@ -19,11 +20,10 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/{id}")
-    public String show(@PathVariable("id") Long id, ModelMap model) {
-        // получим 1 чела по айди
-        model.addAttribute("user", userService.getUserById(id));
-        return "user";
+    @GetMapping("/")
+    public String show(ModelMap model, Principal principal) {
+        model.addAttribute("user", userService.getUserByLogin(principal.getName()));
+        return "user/user";
     }
 
 

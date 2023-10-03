@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+    <title>Edit User</title>
+</head>
+<body>
+<h1>Edit User</h1>
+<form th:method="PATCH" th:action="@{{id}(id=${user.getId()})}" th:object="${user}">
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th> Name (Имя)</th>
+            <th> Age (Возраст)</th>
+            <th>Password (Пароль)</th>
+            <th>Role (Роль)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <td>
+            <label for="username">Edit name</label>
+            <input type="text" th:field="*{username}" id="username"/>
+            <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}" >name error</div>
+        </td>
+        <td>
+            <label for="age">Edit age</label>
+            <input type="number" th:field="*{age}" id="age">
+            <div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">age error</div>
+        </td>
+        <td>
+            <label for="password">Edit password</label>
+            <input type="password" th:field="*{password}" id="password">
+            <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password error</div>
+        </td>
+        <td>
+            <label for="roles">Edit role (1 - admin; 2 - user; 1, 2 - admin and user</label>
+            <input type="text" th:field="*{roles}" id="roles"/>
+            <div style="color:red" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}" >role error</div>
+        </td>
+        </tbody>
+    </table>
+
+<button type="submit" onclick="window.location.href = '/admin/hello'">
+    Edit User
+</button>
+<br>
+<br>
+<button type="button" onclick="window.location.href = '/admin/hello'">Back to users</button>
+    <form th:action="@{/logout}" th:method="POST">
+        <input type="submit" value="Logout">
+    </form>
+</body>
+</html>

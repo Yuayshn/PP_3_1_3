@@ -19,19 +19,21 @@
         <th>Name (Имя)</th>
         <th>Age (Возраст)</th>
         <th>Password (Пароль)</th>
+        <th>Role (Роль)</th>
     </tr>
     </thead>
     <tbody>
         <tr th:each="user : ${users}">
-            <td><a th:href="@{'/' + ${user.getId()}}" th:text="${user.getId()}">Id</a></td>
-            <td th:text="${user.getName()}">Name</td>
+            <td><a th:href="@{'/admin/' + ${user.getId()}}" th:text="${user.getId()}">Id</a></td>
+            <td th:text="${user.getUsername()}">Name</td>
             <td th:text="${user.getAge()}">Age</td>
             <td th:text="${user.getPassword()}">Password</td>
+            <td th:text="${user.getRoles()}">Role</td>
         </tr>
     </tbody>
 </table>
 <br>
-<button type="submit" onclick="window.location.href = '/new'">Add User</button>
+<button type="submit" onclick="window.location.href = '/admin/new'">Add User</button>
 <br>
 <br>
 <form th:action="@{/logout}" th:method="POST">

@@ -19,19 +19,21 @@
         <th>Name (Имя)</th>
         <th>Age (Возраст)</th>
         <th>Password (Пароль)</th>
+        <th>Role (Роль)</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="user : ${user} ">
         <td th:text="${user.getId()}">Id</td>
-        <td th:text="${user.getName()}">name</td>
+        <td th:text="${user.getUsername()}">name</td>
         <td th:text="${user.getAge()}">age</td>
         <td th:text="${user.getPassword}">password</td>
+        <td th:text="${user.getRoles()}">Role</td>
     </tr>
     </tbody>
 </table>
 <br>
-<form th:action="@{'edit/' + ${user.getId()}}">
+<form th:action="@{'/admin/edit/' + ${user.getId()}}">
     <input type="submit" class="buttonEdit" value="Edit User"/>
 </form>
 <br>
@@ -39,7 +41,11 @@
     <input type="submit" class="buttonDelete" value="Delete User"/>
 </form>
 <br>
-<button onclick="window.location.href = '/hello'">Back to users</button>
-
+<button onclick="window.location.href = '/admin/hello'">Back to users</button>
+<br>
+<br>
+<form th:action="@{/logout}" th:method="POST">
+    <input type="submit" value="Logout">
+</form>
 </body>
 </html>

@@ -4,29 +4,25 @@ package ru.javamentor.springmvc.service;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.javamentor.springmvc.dao.UserDao;
 import ru.javamentor.springmvc.model.User;
 import ru.javamentor.springmvc.repositories.UserRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
-
-    private final UserDao userDao;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder, UserRepository userRepository) {
-        this.userDao = userDao;
+    public UserServiceImpl(@Lazy PasswordEncoder passwordEncoder, UserRepository userRepository) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
     }
@@ -39,29 +35,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id);
+    public User getUserById(Long id) {
+        return userRepository.getOne(id);
     }
 
     @Override
+    @Transactional
     public void addUser(User user) {
-        if(!user.getPassword().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 
     @Override
+    @Transactional
     public void removeUser(Long id) {
         userRepository.deleteById(id);
     }
 
     @Override
+    @Transactional
     public void updateUser(@Valid User user) {
-        if(!user.getPassword().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-        }
-        userDao.updateUser((user));
+//        user.setId(user.getId());
+        userRepository.save(user);
     }
 
     @Override
@@ -77,6 +72,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new UsernameNotFoundException(String.format("User '%s' not found", username));
         }
-        return user;
+        return new org.springframework.security.core.userdetails.User(user.getUsername(),
+                user.getPassword(), user.getAuthorities());
     }
 }
