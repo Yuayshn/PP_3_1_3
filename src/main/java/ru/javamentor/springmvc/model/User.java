@@ -13,7 +13,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Collection;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -23,12 +28,18 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(name = "username")
+    @NotEmpty(message = "Username should be between 2 and 25 latin characters")
+    @Size(min = 2, max = 25)
     private String username;
 
     @Column(name = "age")
+    @Min(value = 0, message = "Age should be >= 0")
+    @Max(value = 127, message = "Age should be < 128")
     private Short age;
 
     @Column(name = "password")
+    @NotEmpty(message = "Password should be between 4 and 25 characters")
+    @Size(min = 3)
     private String password;
 
 
@@ -112,5 +123,22 @@ public class User implements UserDetails {
 
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 17;
+
+        hash = 31 * hash + (username == null ? 0 : username.hashCode());
+        hash = (int) (31 * hash + id);
+        return hash;
     }
 }

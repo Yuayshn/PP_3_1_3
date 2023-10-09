@@ -1,41 +1,39 @@
 package ru.javamentor.springmvc.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.springmvc.model.Role;
-import ru.javamentor.springmvc.repositories.RoleRepository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Service
 public class RoleServiceImpl implements RoleService {
-
-    private final RoleRepository roleRepository;
-
-    @Autowired
-    public RoleServiceImpl(RoleRepository roleRepository) {
-        this.roleRepository = roleRepository;
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
+    @Transactional(readOnly = true)
     public List<Role> getAllUsers() {
-        return roleRepository.findAll();
+        return entityManager.createQuery("select r from Role r", Role.class).getResultList();
     }
 
     @Override
     @Transactional
     public void save(Role role) {
-        roleRepository.save(role);
+        entityManager.persist(role);
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
-        roleRepository.deleteById(id);
+        entityManager.remove(showUserById(id));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Role showUserById(Long id) {
-        return roleRepository.getOne(id);
+        return entityManager.find(Role.class, id);
     }
 }
