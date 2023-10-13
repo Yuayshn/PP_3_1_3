@@ -23,17 +23,23 @@ public class Init {
     }
     @PostConstruct
     public void initializedDataBase() {
-        roleService.save(new Role("ROLE_ADMIN"));
-        roleService.save(new Role("ROLE_USER"));
+        roleService.addRole(new Role("ADMIN"));
+        roleService.addRole(new Role("USER"));
+
         Set<Role> adminRole = new HashSet<>();
         Set<Role> userRole = new HashSet<>();
         Set<Role> allRoles = new HashSet<>();
-        adminRole.add(roleService.showUserById(1L));
-        userRole.add(roleService.showUserById(2L));
-        allRoles.add(roleService.showUserById(1L));
-        allRoles.add(roleService.showUserById(2L));
-        userService.addUser(new User((short) 10, "Admin", "admin" , adminRole));
-        userService.addUser(new User((short) 15, "User", "user", userRole));
-        userService.addUser(new User((short) 20,"Java", "hotjava", allRoles));
+
+        adminRole.add(roleService.getRoleById(1L));
+        userRole.add(roleService.getRoleById(2L));
+        allRoles.add(roleService.getRoleById(1L));
+        allRoles.add(roleService.getRoleById(2L));
+
+        userService.saveUser(new User("Alesha", "Popovich", 23, "alesha@mail.com",
+                "User", "user", userRole));
+        userService.saveUser(new User("Elon", "Mask", 30, "elonFacebook@facebook.com",
+                "Admin", "admin", adminRole));
+        userService.saveUser(new User("Java", "Hot", 99, "helloWorld@yandex.ru",
+                "Java", "java", allRoles));
     }
 }

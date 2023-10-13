@@ -1,39 +1,40 @@
 package ru.javamentor.springmvc.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.javamentor.springmvc.dao.RoleDao;
 import ru.javamentor.springmvc.model.Role;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Service
 public class RoleServiceImpl implements RoleService {
-    @PersistenceContext
-    private EntityManager entityManager;
+    private final RoleDao roleDao;
+
+    @Autowired
+    public RoleServiceImpl(RoleDao roleDao) {
+        this.roleDao = roleDao;
+    }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<Role> getAllUsers() {
-        return entityManager.createQuery("select r from Role r", Role.class).getResultList();
+    public List<Role> getAllRoles() {
+        return roleDao.getAllRoles();
+    }
+
+    @Override
+    public Role getRole(String userRole) {
+        return roleDao.getRole(userRole);
+    }
+
+    @Override
+    public Role getRoleById(Long id) {
+        return roleDao.getRoleById(id);
     }
 
     @Override
     @Transactional
-    public void save(Role role) {
-        entityManager.persist(role);
-    }
-
-    @Override
-    @Transactional
-    public void deleteById(Long id) {
-        entityManager.remove(showUserById(id));
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Role showUserById(Long id) {
-        return entityManager.find(Role.class, id);
+    public void addRole(Role role) {
+        roleDao.addRole(role);
     }
 }

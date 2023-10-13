@@ -1,29 +1,26 @@
 package ru.javamentor.springmvc.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
-import ru.javamentor.springmvc.service.UserService;
-
-import java.security.Principal;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import ru.javamentor.springmvc.model.User;
 
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
 
-    private final UserService userService;
-
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+    @GetMapping(value = "/login")
+    public String loginPage() {
+        return "user/login";
     }
 
     @GetMapping("/")
-    public String show(ModelMap model, Principal principal) {
-        model.addAttribute("user", userService.getUserByLogin(principal.getName()));
-        return "user/user";
+    public String show(@AuthenticationPrincipal User user, ModelMap model) {
+        model.addAttribute("user", user);
+        return "user/user_page";
     }
 
 

@@ -1,10 +1,11 @@
-package ru.javamentor.springmvc.service;
+package ru.javamentor.springmvc.dao;
 
 import ru.javamentor.springmvc.model.Role;
 
 import java.util.List;
 
-public interface RoleService {
+public interface RoleDao {
+
     List<Role> getAllRoles();
 
     Role getRole(String userRole);

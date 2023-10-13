@@ -1,15 +1,13 @@
-package ru.javamentor.springmvc.service;
-
+package ru.javamentor.springmvc.dao;
 
 import ru.javamentor.springmvc.model.User;
 
-import javax.validation.Valid;
 import java.util.List;
 
-public interface UserService {
+public interface UserDao {
     void saveUser(User user);
 
-    void updateUser(@Valid User user);
+    void updateUser(User user);
 
     void deleteUser(long id);
 
